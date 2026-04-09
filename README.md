@@ -122,8 +122,6 @@ Body :
      🌐 Extension navigateur
      🤖 Résumé automatique du contenu
 
-
-
 ✨ Vision
 
     Yowl ambitionne de devenir une couche universelle de discussion pour le web, indépendante des plateformes.
