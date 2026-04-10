@@ -43,6 +43,8 @@ return new class extends Migration
             $table->timestamps();
         });
 
+
+
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('title') ->unique();
@@ -74,8 +76,8 @@ return new class extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('posts');
         Schema::dropIfExists('commentaires');
-        Schema::dropIfExists('categories');   
-        Schema::dropIfExists('post_Categ');    
+        Schema::dropIfExists('categories');
+        Schema::dropIfExists('post_Categ');
         Schema::dropIfExists('sessions');
     }
 };
