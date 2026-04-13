@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        //Authentification
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('firstName');
