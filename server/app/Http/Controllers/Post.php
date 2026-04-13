@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Services\OpenGraphService;
 use Illuminate\Http\Request;
-use OpenGraph;
+use App\Services\ScreenShotService;
 
 
 
@@ -19,11 +19,11 @@ class post extends Controller
 
 
 
-    $res= OpenGraphService::fetchFromUrl($link['link']);
-    //   $data =  OpenGraph::fetch($link['link']);
+    $res = OpenGraphService::fetchUrl($link['link']);
+    $capture = ScreenShotService::TakeScreenshot($link['link']);
 
-//    return ['myOwnService' =>$res, "librairie" =>$data];
-return $res;
+    
+   return ["openGraph" =>$res,"image" =>$capture] ;
 
 
  }
