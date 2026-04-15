@@ -22,7 +22,7 @@ class postController extends Controller
 
     $res = OpenGraphService::fetchUrl($link['link']);
     $capture= ScreenShotService::TakeScreenshot($link['link']);
-   $post =  post::
+     return [ "data" => $res, "screen" => $capture];
     
 
 

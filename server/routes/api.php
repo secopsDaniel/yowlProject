@@ -8,6 +8,7 @@ use App\Http\Controllers\postController;
 
 Route::post('/register', [AuthController::class, 'SignUp']);
 Route::post('/login', [AuthController::class, 'SignIn']);
+Route::post('/post', [postController::class, 'getDataFromLink']);
 
 Route::get('/user', function (Request $request ){
     return response()->json($request->user());
