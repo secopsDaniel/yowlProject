@@ -10,7 +10,7 @@ class OpenGraphService
     {
          $response = Http::withHeaders([
          'User-Agent' => 'Mozilla/5.0'
-      ])->timeout(15)->get($url);
+      ])->timeout(20)->get($url);
 
         if (!$response->successful()) {
             return null;

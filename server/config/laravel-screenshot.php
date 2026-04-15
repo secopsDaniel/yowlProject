@@ -12,7 +12,7 @@ return [
      * You can replace this with your own class that extends GenerateScreenshotJob
      * to customize things like $tries, $timeout, $backoff, or default queue.
      */
-    'job' => Spatie\LaravelScreenshot\Jobs\GenerateScreenshotJob::class,
+    'job' => \App\Jobs\GenerateScreenshotJob::class,
 
     /*
      * The action class used to determine the image type from a file path.
