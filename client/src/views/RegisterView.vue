@@ -1,9 +1,57 @@
+<script setup>
+import { authService } from '@/services/authService'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const error = ref()
+const router = useRouter()
+const credentials = ref({
+       firstName : '',
+       lastName : '',
+        login : '',
+        email : '',
+        password : '',
+        password_confirmation : '',
+        gender : '',
+        birthday : ''
+})
+
+// function validerInscription() {
+
+//   if (Object.values(credentials.value).some(el => el.trim().length === 0)) {
+//          return false;
+//      }
+//       return true; 
+// }
+
+     
+
+
+async function Register() {
+      try { 
+        const res = await authService.register(credentials.value);
+        if (res.status) {
+          router.push('/login')
+        }
+
+       } catch (er) {
+           error.value = er
+           console.log(error.value)
+        }
+
+
+}
+
+</script>
+
+
+
 <template>
   <div class="page-auth">
     <div class="ma-carte">
       <h1 class="titre-violet">INSCRIPTION</h1>
 
-      <form @submit.prevent="submitData">
+      <form @submit.prevent="Register" method="post">
         <div class="champ">
           <label>Nom : </label>
           <input type="text" v-model="credentials.firstName" required="">
@@ -22,6 +70,17 @@
           <label>Email:</label>
           <input type="email" v-model="credentials.email" required="">
         </div>
+
+         <div class="champ">
+          <label>Genre:</label>
+          
+          <select  v-model="credentials.gender">
+              <option value="F">Femme</option>
+              <option value="H">Homme</option>
+          </select>
+        </div>
+
+
         <div class="champ">
           <label>Date de naissance</label>
           <input type="date" v-model="credentials.birthday" required>
@@ -37,7 +96,9 @@
           <input type="password" v-model="credentials.password_confirmation" required="">
         </div>
 
-        <button type="submit" :class="validerInscription ? 'mon-bouton' : 'mon-disable' "  :disabled="!validerInscription">S'INSCRIRE</button>
+        <!-- <button type="submit" :class="validerInscription() ? 'mon-bouton' : 'mon-disable' " :disabled="validerInscription()" >S'INSCRIRE</button> -->
+       <button type="submit" class="mon-bouton" >S'INSCRIRE</button>
+         
       </form>
 
       <div class="bas-de-page">
@@ -47,50 +108,7 @@
   </div>
 </template>
 
-<script setup>
-import { authService } from '@/api/authService';
-import { ref } from 'vue'
-const error = ref({
-       firstName : '',
-       lastName : '',
-        login : '',
-        email : '',
-        password : '',
-        password_confirmation : '',
-        gender : '',
-        birthday : ''
-})
 
-const credentials = ref({
-       firstName : '',
-       lastName : '',
-        login : '',
-        email : '',
-        password : '',
-        password_confirmation : '',
-        gender : '',
-        birthday : ''
-})
-
-function validerInscription() {
-  if (credentials.value.find(el =>el.length == 0)) {
-     return false
-}
-
-function submitData() {
-
-  try {
-    const 
-
-  } catch (error) {
-
-  }
-
-
-
-}
-}
-</script>
 
 <style scoped>
 .page-auth {
@@ -128,7 +146,7 @@ function submitData() {
   margin-bottom: 4px;
 }
 
-.champ input {
+.champ input,select {
   width: 100%;
   padding: 8px 12px;
   border-radius: 8px;

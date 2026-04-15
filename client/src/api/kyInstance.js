@@ -1,4 +1,5 @@
 import ky from "ky";
+import Cookies from "js-cookie";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -9,9 +10,19 @@ export const kyInstance = ky.create({
    Accept: 'application/json',
  },
 
-
  timeout:5000,
- credentials:"include"
+ credentials:"include",
+ hooks : {
+     beforeRequest: (
+      request => {
+        const token = Cookies.get('XSRF-TOKEN')
+        if (token) {
+           request.headers.set('X-XSRF-TOKEN',token)
+          
+        }
+      }
+     )
+ }
 
 })
 

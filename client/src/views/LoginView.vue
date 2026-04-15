@@ -3,15 +3,15 @@
     <div class="macarte">
       <h1 class="titre-violet">CONNEXION</h1>
 
-      <form @submit.prevent="boutonConnexion">
+      <form @submit.prevent="Login">
         <div class="champ">
           <label>Email</label>
-          <input type="email" v-model="Email" placeholder="entrez votre mail">
+          <input type="email" v-model="credential.email" placeholder="entrez votre mail">
         </div>
 
         <div class="champ">
           <label>Mot de passe</label>
-          <input type="password" v-model="MotDePasse">
+          <input type="password" v-model="credential.password">
         </div>
 
         <button type="submit" class="mon-bouton">
@@ -28,16 +28,26 @@
 
 <script setup>
 import { ref } from 'vue'
+import { authService } from '@/services/authService';
 
-const Email = ref('')
-const MotDePasse = ref('')
+const credential = ref({
+  email : '',
+  password : ''
+})
 
-function boutonConnexion() {
-  if (Email.value === "" || MotDePasse.value === "") {
-    alert("Attention : Merci de remplir tous les champs !")
-  } else {
-    alert("Tentative de connexion pour : " + Email.value)
+
+// function validate() {
+//   if (credential.value.email=== "" || credential.value.password === "") return
+    
+// }
+
+async function Login() {
+  try {
+    await authService.login(credential.value)
+  } catch (error) {
+    console.error(error)
   }
+  
 }
 </script>
 

@@ -21,11 +21,10 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     return response()->json(['message' => 'votre Email à été vérifié']);
 })->middleware(['auth:sanctum', 'signed'])->name('verification.verify');
 
+
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
     return response()->json(['message' => 'Le lien de vérification est envoyé, Vérifiez vos emails!']);
 })->middleware(['auth:sanctum', 'throttle:6,1'])->name('verification.send');
 
-// Route::get('/', function () {
-//     return view('welcome');
-// })->name('verification.notice');
+

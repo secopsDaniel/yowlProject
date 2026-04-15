@@ -15,6 +15,7 @@
     "format": "oxfmt src/"
   },
   "dependencies": {
+    "js-cookie": "^3.0.5",
     "ky": "^2.0.0",
     "pinia": "^3.0.4",
     "vue": "^3.5.31",
