@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'SignUp']);
 Route::post('/login', [AuthController::class, 'SignIn']);
- 
+
 Route::get('/user', function (Request $request ){
     return response()->json($request->user());
     })->middleware('auth:sanctum');
@@ -16,7 +16,7 @@ Route::get('/user', function (Request $request ){
 //mail
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
- 
+
     return response()->json(['message' => 'votre Email à été vérifié']);
 })->middleware(['auth:sanctum', 'signed'])->name('verification.verify');
 
