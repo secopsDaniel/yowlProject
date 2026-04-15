@@ -1,0 +1,32 @@
+<?php
+
+namespace App\Http\Controllers;
+use App\Services\OpenGraphService;
+use Illuminate\Http\Request;
+use App\Services\ScreenShotService;
+use App\Models\post;
+
+
+
+class postController extends Controller
+{
+
+
+ public function getDataFromLink(Request $req){
+
+   $link = $req->validate([
+      'link' =>['required', 'string', 'url'],
+   ]);
+
+
+
+    $res = OpenGraphService::fetchUrl($link['link']);
+    $capture= ScreenShotService::TakeScreenshot($link['link']);
+   $post =  post::
+    
+
+
+ }
+
+
+}

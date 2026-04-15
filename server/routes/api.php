@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\postController;
 
 Route::post('/register', [AuthController::class, 'SignUp']);
 Route::post('/login', [AuthController::class, 'SignIn']);
