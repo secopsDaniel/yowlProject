@@ -25,7 +25,7 @@ export const kyInstance = ky.create({
     ],
 
      afterResponse: [
-      async (request, options, response) => {
+      async (response) => {
         if (response.status === 401) {
           localStorage.removeItem('token');
           window.location.href = '/login';

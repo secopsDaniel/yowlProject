@@ -10,3 +10,8 @@ Route::get('/user', function (Request $request) {
 Route::post('/register', function (Request $req ){
     return $req->all();
     });
+
+/* use App\Http\Controllers\AuthenController;
+Route::post('/register', [AuthenController::class, 'register']);
+Route::post('/login', [AuthenController::class, 'login']); */
+
