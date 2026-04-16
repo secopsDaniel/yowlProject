@@ -20,30 +20,17 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore();
 
-
   if (!authStore.user) {
     await authStore.fetchUser();
   }
 
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    next("/login");
+        next("/login");
   } else {
-    next();
+       next();
   }
 });
 
-router.beforeEach(async (to, from, next) => {
-  const authStore = useAuthStore();
 
-  if (!authStore.user) {
-    await authStore.fetchUser();
-  }
-
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    next("/login");
-  } else {
-    next();
-  }
-});
 
 export default router
