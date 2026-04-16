@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router'
 
 const error = ref()
 const router = useRouter()
+
 const credentials = ref({
        firstName : '',
        lastName : '',
@@ -16,19 +17,80 @@ const credentials = ref({
         birthday : ''
 })
 
-// function validerInscription() {
+const errorCred = ref({
+       firstName : '',
+       lastName : '',
+        login : '',
+        email : '',
+        password : '',
+        password_confirmation : '',
+        gender : '',
+        birthday : ''
+})
 
-//   if (Object.values(credentials.value).some(el => el.trim().length === 0)) {
-//          return false;
-//      }
-//       return true; 
-// }
 
-     
+function validerInscription() {
+    // reset erreurs
+    errorCred.value = {
+        firstName: '',
+        lastName: '',
+        login: '',
+        email: '',
+        password: '',
+        password_confirmation: '',
+        gender: '',
+        birthday: ''
+    };
+
+    const birthDate = new Date(credentials.value.birthday);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$/;
+
+    // FIRST NAME
+    if (credentials.value.firstName.trim().length < 3) {
+        errorCred.value.firstName = 'Nom invalide (min 3 caractères)';
+    }
+
+    // LAST NAME
+    if (credentials.value.lastName.trim().length < 3) {
+        errorCred.value.lastName = 'Prénom invalide (min 3 caractères)';
+    }
+
+    // LOGIN
+    if (credentials.value.login.trim().length < 3) {
+        errorCred.value.login = 'Pseudo invalide (min 3 caractères)';
+    }
+
+    // EMAIL
+    if (!emailRegex.test(credentials.value.email)) {
+        errorCred.value.email = 'Email invalide';
+    }
+
+    // PASSWORD
+    if (credentials.value.password.length < 4 || credentials.value.password.length > 20) {
+        errorCred.value.password = 'Mot de passe entre 4 et 20 caractères';
+    }
+
+    // CONFIRM PASSWORD
+    if (credentials.value.password_confirmation !== credentials.value.password) {
+        errorCred.value.password_confirmation = 'Les mots de passe ne correspondent pas';
+    }
+
+    // AGE
+    if (age < 13 || age > 35) {
+        errorCred.value.birthday = "Âge non autorisé (13–35 ans)";
+    }
+
+    // check si erreurs
+    return !Object.values(errorCred.value).some(el => el !== '');
+}
 
 
 async function Register() {
-      try { 
+  if(!validerInscription()) return
+      try {
         const res = await authService.register(credentials.value);
         if (res.status) {
           router.push('/login')
@@ -51,54 +113,61 @@ async function Register() {
     <div class="ma-carte">
       <h1 class="titre-violet">INSCRIPTION</h1>
 
-      <form @submit.prevent="Register" method="post">
+      <form @submit.prevent="Register" method="post" >
         <div class="champ">
           <label>Nom : </label>
-          <input type="text" v-model="credentials.firstName" required="">
+          <label class="error">{{ errorCred.firstName }}</label>
+          <input type="text" v-model="credentials.firstName" >
         </div>
 
         <div class="champ">
           <label>prenom:</label>
-          <input type="text" v-model="credentials.lastName" required="">
+          <label class="error">{{ errorCred.lastName }}</label>
+          <input type="text" v-model="credentials.lastName">
         </div>
 
         <div class="champ">
-          <label>login:</label>
-          <input type="text" v-model="credentials.login" required="">
+          <label>Pseudo:</label>
+          <label class="error">{{ errorCred.login }}</label>
+          <input type="text" v-model="credentials.login" >
         </div>
         <div class="champ">
           <label>Email:</label>
-          <input type="email" v-model="credentials.email" required="">
+          <label class="error">{{ errorCred.email }}</label>
+          <input type="email" v-model="credentials.email" >
         </div>
 
          <div class="champ">
           <label>Genre:</label>
-          
-          <select  v-model="credentials.gender">
-              <option value="F">Femme</option>
-              <option value="H">Homme</option>
+
+          <select  v-model="credentials.gender" required="">
+              <option value="Femme">Femme</option>
+              <option value="Homme">Homme</option>
           </select>
         </div>
 
 
         <div class="champ">
           <label>Date de naissance</label>
-          <input type="date" v-model="credentials.birthday" required>
+          <label class="error">{{ errorCred.birthday }}</label>
+          <input type="date" v-model="credentials.birthday" >
         </div>
 
         <div class="champ">
           <label>Mot de passe</label>
+          <label class="error">{{ errorCred.password }}</label>
           <input type="password" v-model="credentials.password" >
         </div>
 
         <div class="champ">
           <label>Confirmer mot de passe</label>
-          <input type="password" v-model="credentials.password_confirmation" required="">
+          <label class="error">{{ errorCred.password_confirmation }}</label>
+          <input type="password" v-model="credentials.password_confirmation" >
         </div>
 
         <!-- <button type="submit" :class="validerInscription() ? 'mon-bouton' : 'mon-disable' " :disabled="validerInscription()" >S'INSCRIRE</button> -->
        <button type="submit" class="mon-bouton" >S'INSCRIRE</button>
-         
+
       </form>
 
       <div class="bas-de-page">
@@ -139,11 +208,20 @@ async function Register() {
   margin-bottom: 12px;
 }
 
-.champ label {
+.champ label:first-child {
   display: block;
-  font-size: 13px;
+  font-size: 15px;
   color: #666;
   margin-bottom: 4px;
+  font-weight: bold;
+}
+
+.error{
+  display: block;
+  font-size: 15px;
+  color:red;
+  margin-bottom: 4px;
+  margin-top: 5px;
 }
 
 .champ input,select {

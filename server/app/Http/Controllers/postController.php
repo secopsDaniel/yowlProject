@@ -14,8 +14,9 @@ class postController extends Controller
 
  public function getDataFromLink(Request $req){
 
-   $link = $req->validate([
-      'link' =>['required', 'string', 'url'],
+    $link = $req->validate([
+      'link' =>['required', 'string', 'unique', 'url'],
+       'categorie' =>['required' ]
    ]);
 
 
@@ -23,7 +24,7 @@ class postController extends Controller
     $res = OpenGraphService::fetchUrl($link['link']);
     $capture= ScreenShotService::TakeScreenshot($link['link']);
      return [ "data" => $res, "screen" => $capture];
-    
+
 
 
  }

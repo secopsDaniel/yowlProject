@@ -67,7 +67,7 @@ class AuthController extends Controller
                 'message' => "L'email ou le mot de passe est incorrect"
             ], 401);
         }
-        
+
         $user = User::where('email', $fields['email'])->first();
         $token = $user->createToken('auth_token')->plainTextToken;
 
