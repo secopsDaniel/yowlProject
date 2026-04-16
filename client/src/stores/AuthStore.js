@@ -70,6 +70,19 @@ export const useAuthStore = defineStore("auth", {
       }
     },
 
+    async AuthMail (){
+      this.user  = null
+      this.errors = null
+      try {
+       await this.fetchUser();
+      const res =  authService.sendAuthEmail(this.user)
+      return res;
+      } catch (error) {
+       const apiError = await parseApiError(error);
+       this.errors = apiError
+      }
+
+    },
     async logout() {
       await authService.logout();
       this.user = null;

@@ -30,6 +30,11 @@ class User extends Authenticatable implements MustVerifyEmail {
         'remember_token',
     ];
 
+
+    public function getEmailVerifiedAtColumn()
+{
+    return 'verified_at';
+}
     protected function casts(): array
     {
         return [
@@ -39,4 +44,4 @@ class User extends Authenticatable implements MustVerifyEmail {
         ];
     }
 }
-    
+

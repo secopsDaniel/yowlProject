@@ -44,7 +44,12 @@ async function Login() {
         email : '',
         password : ''
 }
-    router.push('/')
+  if (auth.user.is_verified  == null|| auth.user.verified_at == null) {
+     router.push('/authMail')
+  }else{
+     router.push('/')
+  }
+
     }
   } catch  {
     errorServer.value = auth.errors;

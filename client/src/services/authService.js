@@ -19,6 +19,14 @@ export const authService = {
        }).json();
   },
 
+  async sendAuthEmail(user){
+   const res =  await kyInstance.post("email/verification-notification",{
+     json: user,
+      headers : getAuthHeaders()
+    })
+    return res;
+  },
+
   async logout() {
     await kyInstance.post("logout");
   },
