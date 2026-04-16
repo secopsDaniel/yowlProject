@@ -1,12 +1,33 @@
-import { kyInstance ,getCsrfCookie} from '../api/kyInstance';
+import { kyInstance,getAuthHeaders} from "../api/kyInstance";
 
 export const authService = {
-   async login(credentials) {
-        await kyInstance.post('/login', { json: credentials }).json();
-    },
+ async login(credentials) {
+  const res = await kyInstance.post("login", {
+    json: credentials
+  }).json();
 
-   async register(userData) {
+  localStorage.setItem("token", res.token);
 
-        await kyInstance.post('/register', { json: userData }).json();
-    },
+  return res;
+},
+
+  async register(data) {
+
+    await kyInstance.post("register", {
+
+        json: data,
+       }).json();
+  },
+
+  async logout() {
+    await kyInstance.post("logout");
+  },
+
+  async getme() {
+    return await kyInstance.get("user",{
+       headers: getAuthHeaders()
+    }
+
+    ).json();
+  },
 };

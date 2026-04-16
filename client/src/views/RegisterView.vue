@@ -1,12 +1,13 @@
 <script setup>
-import { authService } from '@/services/authService'
+import { useAuthStore } from '@/stores/AuthStore'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const error = ref()
 const router = useRouter()
+const auth = useAuthStore()
 
-const credentials = ref({
+let credentials = ref({
        firstName : '',
        lastName : '',
         login : '',
@@ -30,7 +31,7 @@ const errorCred = ref({
 
 
 function validerInscription() {
-    // reset erreurs
+
     errorCred.value = {
         firstName: '',
         lastName: '',
@@ -91,14 +92,24 @@ function validerInscription() {
 async function Register() {
   if(!validerInscription()) return
       try {
-        const res = await authService.register(credentials.value);
-        if (res.status) {
+        await auth.register(credentials.value);
+        if (!auth.errors ) {
+          credentials.value = {
+          firstName : '',
+          lastName : '',
+           login : '',
+           email : '',
+           password : '',
+           password_confirmation : '',
+           gender : '',
+           birthday : ''
+}
+
           router.push('/login')
         }
 
-       } catch (er) {
-           error.value = er
-           console.log(error.value)
+       } catch {
+          error.value = auth.errors
         }
 
 

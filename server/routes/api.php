@@ -18,10 +18,9 @@ Route::post('/login', [AuthController::class, 'SignIn']);
 /*
 User api route need authentifiation
 */
-Route::get('/user', function (Request $request ){
-    return response()->json($request->user());
-    })->middleware('auth:sanctum');
-
+Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
+    return $request->user();
+});
 /*
 Mail api routes
 */

@@ -1,5 +1,4 @@
 import ky from "ky";
-import Cookies from "js-cookie";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -11,21 +10,29 @@ export const kyInstance = ky.create({
  },
 
  timeout:5000,
- credentials:"include",
- hooks : {
-     beforeRequest: (
-      request => {
-        const token = Cookies.get('XSRF-TOKEN')
-        if (token) {
-           request.headers.set('X-XSRF-TOKEN',token)
-          
-        }
-      }
-     )
- }
+
 
 })
 
-export async function getCsrfCookie() {
-  await kyInstance.get('sanctum/csrf-cookie')
+export function getAuthHeaders() {
+  const token = localStorage.getItem("token")?.trim();
+
+  return token
+    ? { Authorization: `Bearer ${token}` }
+    : {};
+}
+
+export async function parseApiError(error) {
+  if (!error.response) {
+    return { message: "Network error", status: 0 };
+  }
+
+  const status = error.response.status;
+  const data = await error.response.json().catch(() => ({}));
+
+  return {
+    status,
+    message: data.message || "Error",
+    errors: data.errors || {},
+  };
 }

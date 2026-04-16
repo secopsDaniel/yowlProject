@@ -1,16 +1,79 @@
+<script setup>
+import { ref } from 'vue'
+import { useAuthStore } from '@/stores/AuthStore'
+import { useRouter } from 'vue-router'
+const errorServer = ref()
+const credential = ref({
+  email : '',
+  password : ''
+})
+const router = useRouter()
+const error = ref({
+  email : '',
+  password : ''
+})
+
+ const auth  = useAuthStore();
+
+function validatedata (){
+  error.value = {
+  email : '',
+  password : ''
+}
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$/;
+     if (credential.value.email.trim() == '' || emailRegex.test(credential.value.email) == false) {
+      error.value.email = 'Adresse email invalide'
+     }
+
+     if(credential.value.password.trim().length ==0){
+      error.value.password = "password requis !"
+     }
+
+     // check si erreurs
+    return !Object.values(error.value).some(el => el !== '');
+
+}
+
+async function Login() {
+  if (!validatedata()) return
+  try {
+
+    await auth.login(credential.value)
+    if(!auth.errors){
+      credential.value = {
+        email : '',
+        password : ''
+}
+    router.push('/')
+    }
+  } catch  {
+    errorServer.value = auth.errors;
+    console.log(errorServer)
+  }
+
+}
+</script>
+
+
+
 <template>
   <div class="page-auth">
     <div class="macarte">
       <h1 class="titre-violet">CONNEXION</h1>
 
       <form @submit.prevent="Login">
+            <div v-if="auth.isAuthenticated">
+            email :{{ auth.user.email }}
+            </div>
         <div class="champ">
           <label>Email</label>
+          <label class="error">{{ error.email }}</label>
           <input type="email" v-model="credential.email" placeholder="entrez votre mail">
         </div>
 
         <div class="champ">
           <label>Mot de passe</label>
+          <label class="error">{{ error.password }}</label>
           <input type="password" v-model="credential.password">
         </div>
 
@@ -25,31 +88,6 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-import { authService } from '@/services/authService';
-
-const credential = ref({
-  email : '',
-  password : ''
-})
-
-
-// function validate() {
-//   if (credential.value.email=== "" || credential.value.password === "") return
-    
-// }
-
-async function Login() {
-  try {
-    await authService.login(credential.value)
-  } catch (error) {
-    console.error(error)
-  }
-  
-}
-</script>
 
 <style scoped>
 
@@ -82,11 +120,20 @@ async function Login() {
   margin-bottom: 15px;
 }
 
-.champ label {
+.champ label:first-child  {
   display: block;
   margin-bottom: 5px;
   font-size: 14px;
+  font-weight: bold;
   color: grey;
+}
+
+.error{
+   display: block;
+  margin-bottom: 8px;
+    margin-top: 5px;
+  font-size: 14px;
+  color: red;
 }
 
 .champ input {
