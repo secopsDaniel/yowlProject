@@ -1,5 +1,5 @@
 <?php
-
+use App\Models\User;
 use App\Http\Controllers\AuthController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -25,7 +25,9 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Mail api routes
 */
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
+    $users = User::find($request->id);
+    $users->is_verified = true;
+    $users->email_verified_at = now()->format('d-m-Y H:i:s');
     return response()->json(['message' => 'votre Email à été vérifié']);
 })->middleware(['auth:sanctum', 'signed'])->name('verification.verify');
 
