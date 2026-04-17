@@ -24,8 +24,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 /*
 Mail api routes
 */
-Route::get('/email/verify/{id}/{hash}',[AuthController::class, 'Verify_Email '])
-->middleware(['auth:sanctum', 'signed'])->name('verification.verify');
+Route::get('/email/verify/{id}/{hash}',[AuthController::class, 'Verify_Email '])->name('verification.verify');
 
 
 Route::post('/email/verification-notification', function (Request $request) {

@@ -3,7 +3,7 @@ import { useAuthStore } from '@/stores/AuthStore'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-const error = ref()
+const errorServer = ref()
 const router = useRouter()
 const auth = useAuthStore()
 
@@ -83,8 +83,6 @@ function validerInscription() {
     if (age < 13 || age > 35) {
         errorCred.value.birthday = "Âge non autorisé (13–35 ans)";
     }
-
-    // check si erreurs
     return !Object.values(errorCred.value).some(el => el !== '');
 }
 
@@ -109,7 +107,7 @@ async function Register() {
         }
 
        } catch {
-          error.value = auth.errors
+          console.log(auth.errors)
         }
 
 
@@ -126,6 +124,11 @@ async function Register() {
 
       <form @submit.prevent="Register" method="post" >
         <div class="champ">
+
+          <div v-if="auth.errors" class="error">
+              {{ errorServer}}
+            </div>
+
           <label>Nom : </label>
           <label class="error">{{ errorCred.firstName }}</label>
           <input type="text" v-model="credentials.firstName" >

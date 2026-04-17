@@ -29,7 +29,6 @@ function validatedata (){
       error.value.password = "password requis !"
      }
 
-     // check si erreurs
     return !Object.values(error.value).some(el => el !== '');
 
 }
@@ -43,17 +42,20 @@ async function Login() {
       credential.value = {
         email : '',
         password : ''
-}
-  if (auth.user.is_verified  == null|| auth.user.verified_at == null) {
-     router.push('/authMail')
-  }else{
-     router.push('/')
-  }
+        }
+
+        if (auth.user.is_verified  == null|| auth.user.verified_at == null) {
+            router.push('/authMail')
+         }else{
+              router.push('/')
+          }
 
     }
+
   } catch  {
-    errorServer.value = auth.errors;
-    console.log(errorServer)
+     if (auth.errors.status == 401) {
+          errorServer.value = "L'email ou le mot de passe est incorrect"
+     }
   }
 
 }
@@ -67,8 +69,8 @@ async function Login() {
       <h1 class="titre-violet">CONNEXION</h1>
 
       <form @submit.prevent="Login">
-            <div v-if="auth.isAuthenticated">
-            email :{{ auth.user.email }}
+            <div v-if="auth.errors" class="error">
+              {{ errorServer}}
             </div>
         <div class="champ">
           <label>Email</label>

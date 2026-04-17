@@ -30,16 +30,16 @@ export const useAuthStore = defineStore("auth", {
 
       try {
         await authService.login(credentials);
-        console.log("AVANT fetchUser");
         await this.fetchUser();
-        console.log("APRÈS fetchUser");
       } catch (err) {
         const apiError = await parseApiError(err);
 
         if (apiError.status === 422) {
-          this.errors = apiError.errors; // 👈 validation errors
-        } else {
+          this.errors = apiError.errors;
           this.errors = { general: apiError.message };
+        }
+        else if (apiError.status == 401) {
+            this.errors = {message : apiError.message, status: apiError.status, err: apiError.errors};
         }
 
         throw err;
@@ -54,7 +54,6 @@ export const useAuthStore = defineStore("auth", {
 
       try {
         await authService.register(data);
-        await this.fetchUser();
       } catch (err) {
         const apiError = await parseApiError(err);
 
