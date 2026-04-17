@@ -21,29 +21,34 @@ import SideBar from '@/components/SideBar.vue';
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Lien</label>
-            <input type="text" placeholder="Titre" 
+            <input type="text" placeholder="Coller le lien ici" 
               class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 outline-none transition" required />
           </div>
           <div>
-            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">ok</label>
-            <input type="text" placeholder="source" 
+            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Source</label>
+            <input type="text" placeholder="Entrez la vraie source Ex: youtube.com" 
               class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 outline-none transition" />
           </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Lien</label>
-            <input type="url" placeholder="colle le lien ici" 
-              class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 outline-none transition" required />
+            <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Catégorie</label>
+            <select  class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 outline-none transition" required >
+                <option value="week">Autres</option>
+                <option value="month">Sport</option>
+                <option value="year">Dance</option>
+            </select>
           </div>
         </div>
 
         <div class="flex justify-center pt-4">
+        <RouterLink to="/create">
           <button type="submit" 
-            class="px-10 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-md shadow-lg shadow-blue-500/30 transition-all active:scale-95 transform">
-            créer
+            class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-md shadow-lg shadow-blue-500/30 transition-all active:scale-95 transform">
+            Valider
           </button>
+        </RouterLink>
         </div>
 
       </form>
