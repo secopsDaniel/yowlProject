@@ -3,110 +3,80 @@ import AllPost from '@/components/AllPost.vue';
 import NavBar from '@/components/NavBar.vue';
 import SideBar from '@/components/SideBar.vue';
 </script>
+
 <template>
     <NavBar/>
-    <div class="flex h-screen">
-        <!-- Sidebar -->
+
+    <div class="flex">
         <SideBar/>
-        <!-- Main Content -->
-        <main class="">
-        <!-- tête Section -->
-        <section class="categories">
-        <div class="container">
-        <div class="container-categories">
-            <h2 class="categories-title">Hello, Toi!</h2>
-            <div class="categories-scroll">
-                <a class="categorie">catégorie_nom</a>
-                <a class="categorie">catégorie_nom</a>
-                <a class="categorie">catégorie_nom</a>
-                <a class="categorie">catégorie_nom</a>
-                <a class="categorie">catégorie_nom</a>
-                <a class="categorie">catégorie_nom</a>
-                <a class="categorie">catégorie_nom</a>
-                <a class="categorie">catégorie_nom</a>
-                <a class="categorie">catégorie_nom</a>
-            </div>
-        </div>
-        </div>
-    </section>
-    <AllPost/>
+
+        <main class="flex-1 ml-20 pt-24 min-h-screen bg-gray-50">
+            
+            <section class="categories">
+                <div class="container mx-auto px-4">
+                    <div class="container-categories">
+                        <div class="categories-scroll">
+                            <a class="categorie">catégorie_nom</a>
+                            <a class="categorie">catégorie_nom</a>
+                            <a class="categorie">catégorie_nom</a>
+                            <a class="categorie">catégorie_nom</a>
+                            <a class="categorie">catégorie_nom</a>
+                            <a class="categorie">catégorie_nom</a>
+                            <a class="categorie">catégorie_nom</a>
+                            <a class="categorie">catégorie_nom</a>
+                            <a class="categorie">catégorie_nom</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <AllPost/>
+            
         </main>
     </div>
 </template>
+
 <style scoped>
-/* * {
-
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Roboto', sans-serif;
-        }
-        
-        body {
-            background-color: #f5f5f5;
-            color: #333;
-        }
-         */
-
-html{
+html {
     scroll-behavior: smooth;
-}        .copyright {
-    text-align: center;
-    padding-top: 20px;
-    border-top: 1px solid white;
-    color: white;
-    font-size: 14px;
-}        
+}
 
 .categories {
-
-    padding: 40px 0
+    padding: 10px 0;
 }
 
-.categories-title{
-    padding: 20px;
-    font-size: 28px;
-    margin-bottom: 20px;
-}
-
-.categories-scroll{
-    display:flex;
+.categories-scroll {
+    display: flex;
     gap: 15px;
     overflow-x: auto;
-    padding-bottom: 10px;
+    padding: 10px 0;
+    scrollbar-width: none; 
 }
 
-.categories-scroll::webkit-scrollbar{
+.categories-scroll::-webkit-scrollbar {
     display: none;
 }
 
-.categorie{
+.categorie {
+    padding: 10px 0;
     min-width: 160px;
-    height: 80px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 20px;
-    color: #1a0934be;
+    border-radius: 12px;
     font-weight: bold;
-    box-shadow: 0 2px 5px rgba(5, 27, 103, 0.19);
+    box-shadow: 0 2px 5px rgba(5, 27, 103, 0.1);
     cursor: pointer;
-    background-color: #ffffffc1;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
-.categorie:hover{
-    background-color: rgba(4, 47, 115, 0.156);
-    color: black;
-    box-shadow: 0 2px 5px #090d34;
-    transform: translateY(1.1)
+.categorie:hover {
+    background-color: #0145b2;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 98, 255, 0.3);
+    transform: translateY(-2px);
 }
-@media (max-width: 768px) {
-            .categories h1 {
-                font-size: 36px;
-            }
-            
-            .categories p {
-                font-size: 18px;
-            }
-        }
 </style>

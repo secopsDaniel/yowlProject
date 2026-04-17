@@ -3,6 +3,8 @@ import HomeView from '../views/HomeView.vue'
 import AdminView from '../views/AdminView.vue'
 import Profil_adView from '@/views/Profil_adView.vue'
 import User_postView from '@/views/User_postView.vue'
+import CreatePostView from '@/views/CreatePostView.vue'
+import FormLinkView from '@/views/FormLinkView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +34,16 @@ const router = createRouter({
       path: '/User_post',
       name: 'post_user',
       component: User_postView,
+    },
+    {
+      path: '/create',
+      name: 'create-post',
+      component: CreatePostView,
+    },
+    {
+      path: '/formlink',
+      name: 'frmlink',
+      component: FormLinkView,
     },
 
     {
