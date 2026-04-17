@@ -7,15 +7,18 @@
         <span class="Date">Il y a 2h</span>
       </div>
     </div>
-
+     <div class="produits-info">
+      <p class="description">
+        commentaire nous fatigue beaucoup je test juste parce que j'ai vu un truc... donc je dois écrire beaucoup
+      </p>
+    </div>
     <div class="produits-img">
       <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=500&q=80" alt="post">
     </div>
-
     <div class="produits-info">
       <h3>Title</h3>
       <p class="description">
-        parler ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo pppppppppppppppppppppppppppp
+        description nous fatigue beaucoup je test juste parce que j'ai vu un truc... donc je dois écrire beaucoup
       </p>
       
       <div class="post-actions">
