@@ -5,7 +5,7 @@
                 <div class="logo">Yo<span>wl</span></div>
                 <nav>
                     <ul>
-                        <RouterLink to="create">
+                        <RouterLink to="formlink">
                         <li><a href="#">+ <span class="cacher">Commenter un lien</span></a></li>
                         </RouterLink>
 
