@@ -24,7 +24,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 /*
 Mail api routes
 */
-Route::get('/email/verify/{id}/{hash}',[AuthController::class, 'Verify_Email '])->name('verification.verify');
+Route::get('/email/verify/{id}/{hash}',[AuthController::class, 'Verify_Email'])->name('verification.verify');
 
 
 Route::post('/email/verification-notification', function (Request $request) {
@@ -38,6 +38,10 @@ Post api route need authentification
 
 Route::post('/post', [postController::class, 'getDataFromLink']);
 
+Route::post('/post/update/{id}', [postController::class, 'UpdatePost']);
+Route::post('/post/update/{id}', [postController::class, 'UpdatePost']);
+Route::post('/post/{id}', [postController::class, 'getPOst']);
+
 
 
 /*
@@ -48,4 +52,5 @@ Route::get('/categories', [Categories::class, 'getAll'])
 
 Route::post('/categories', [Categories::class, 'create'])
 ->middleware('auth:sanctum');
+
 

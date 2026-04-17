@@ -10,7 +10,7 @@ class OpenGraphService
     {
          $response = Http::withHeaders([
          'User-Agent' => 'Mozilla/5.0'
-      ])->timeout(20)->get($url);
+      ])->timeout(30)->get($url);
 
         if (!$response->successful()) {
             return null;
@@ -20,10 +20,10 @@ class OpenGraphService
          $crawler = new Crawler($html);
 
         return [
-            'title' => self::getMetaData($crawler, 'og:title') ?? $crawler->filter('title')->text(''),
+            'titre' => self::getMetaData($crawler, 'og:title') ?? $crawler->filter('title')->text(''),
             'description' => self::getMetaData($crawler, 'og:description') ?? self::getMetaData($crawler, 'description') ,
-            'image' =>self::getMetaData($crawler, 'og:image') ?? self::getMetaData($crawler, 'image'),
-            'url' => $url
+            'photo_video' =>self::getMetaData($crawler, 'og:image') ?? self::getMetaData($crawler, 'image'),
+            'links' => $url
         ];
     }
 
