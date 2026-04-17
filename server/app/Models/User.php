@@ -30,15 +30,24 @@ class User extends Authenticatable implements MustVerifyEmail {
         'remember_token',
     ];
 
+     public function hasVerifiedEmail(): bool
+    {
+        return $this-> verified_at !== null;
+    }
 
-    public function getEmailVerifiedAtColumn()
-{
-    return 'verified_at';
-}
+
+ public function markEmailAsVerified(): bool
+    {
+        return $this->forceFill([
+            'verified_at' => now(),
+            'is_verified' => true
+        ])->save();
+    }
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
+            'verified_at' => 'datetime',
+            'is_verified' => 'boolean',
             'password' => 'hashed',
             'birthday' => 'date',
         ];

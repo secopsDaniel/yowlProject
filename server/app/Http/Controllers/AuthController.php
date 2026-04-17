@@ -77,4 +77,25 @@ class AuthController extends Controller
             'user' => $user,
         ]);
     }
+
+    public function Verify_Email (Request $request, $id, $hash){
+       $user = User::findOrFail($id);
+
+    if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+        return response()->json(['message' => 'Lien invalide.'], 403);
+    }
+
+    if (! $request->hasValidSignature()) {
+        return response()->json(['message' => 'Lien expiré.'], 403);
+    }
+
+    if ($user->hasVerifiedEmail()) {
+        return redirect(env('FRONTEND_URL') . '/login');
+    }
+
+    $user->markEmailAsVerified();
+
+    return redirect(env('FRONTEND_URL') . '/login');
+
+    }
 }
