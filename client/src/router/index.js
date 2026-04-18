@@ -6,14 +6,20 @@ import User_postView from '@/views/User_postView.vue'
 import CreatePostView from '@/views/CreatePostView.vue'
 import FormLinkView from '@/views/FormLinkView.vue'
 import DetailPostView from '@/views/DetailPostView.vue'
+import IndexView from '@/views/indexView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'home',
       component: HomeView,
+    },
+    {
+      path: '/',
+      name: 'index',
+      component: IndexView,
     },
     {
       path: '/profil_ad',
