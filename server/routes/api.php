@@ -35,23 +35,12 @@ Route::post('/email/verification-notification', function (Request $request) {
 /*
 Post api route need authentification
 */
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/post', [postController::class, 'getDataFromLink']);
+    Route::post('/posts/fetch', [PostC::class, 'fetch']);
+    Route::post('/post/update/{id}', [postController::class, 'UpdatePost']);
+    Route::post('/post/{id}', [postController::class, 'getPOst']);
 
-Route::post('/post', [postController::class, 'getDataFromLink']);
-Route::post('/posts/fetch', [PostC::class, 'fetch']);
-
-Route::post('/post/update/{id}', [postController::class, 'UpdatePost']);
-Route::post('/post/update/{id}', [postController::class, 'UpdatePost']);
-Route::post('/post/{id}', [postController::class, 'getPOst']);
-
-
-
-/*
-Categories api route need authentification
-*/
-Route::get('/categories', [Categories::class, 'getAll'])
-->middleware('auth:sanctum');
-
-Route::post('/categories', [Categories::class, 'create'])
-->middleware('auth:sanctum');
-
-
+    Route::get('/categories', [Categories::class, 'getAll']);
+    Route::post('/categories', [Categories::class, 'create']);
+});

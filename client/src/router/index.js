@@ -49,6 +49,7 @@ import DetailPostView from '@/views/DetailPostView.vue'
       path: '/create',
       name: 'create-post',
       component: CreatePostView,
+      meta: { requiresAuth: true },
     },
     {
       path: '/formlink',

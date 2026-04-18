@@ -5,7 +5,7 @@
                 <div class="logo">Yo<span>wl</span></div>
                 <nav>
                     <ul>
-                        <RouterLink to="formlink">
+                        <RouterLink to="create">
                         <li><a href="#">+ <span class="cacher">Commenter un lien</span></a></li>
                         </RouterLink>
 
@@ -24,8 +24,8 @@
     position: fixed;
     top: 0;
     right: 0;
-    left: 80px; 
-    height: 70px; 
+    left: 80px;
+    height: 70px;
     background-color: #101A26;
     z-index: 40;
     display: flex;
@@ -49,7 +49,7 @@
 }
 
 .logo {
-    font-size: 35px; 
+    font-size: 35px;
     font-weight: bold;
     color: rgb(0, 98, 255);
 }
