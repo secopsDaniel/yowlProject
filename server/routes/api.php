@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\postController;
 use App\Http\Controllers\Categories;
-
+use App\Http\Controllers\PostC;
 
 /*
 Authentification api routes
@@ -37,6 +37,7 @@ Post api route need authentification
 */
 
 Route::post('/post', [postController::class, 'getDataFromLink']);
+Route::post('/posts/fetch', [PostC::class, 'fetch']);
 
 Route::post('/post/update/{id}', [postController::class, 'UpdatePost']);
 Route::post('/post/update/{id}', [postController::class, 'UpdatePost']);

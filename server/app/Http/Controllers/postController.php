@@ -66,7 +66,7 @@ $content = [];
                'id_post' => $id,
                'likes' => 0,
                'waring' => 0
-      
+
                ]) ;
        $res = $this->getPOst($id);
        return response()->json([
@@ -74,10 +74,10 @@ $content = [];
           'data' => $res
         ]);
       }
-   
- 
 
-        
+
+
+
   }
 
     public function getPOst($id){
