@@ -5,6 +5,7 @@ import Profil_adView from '@/views/Profil_adView.vue'
 import User_postView from '@/views/User_postView.vue'
 import CreatePostView from '@/views/CreatePostView.vue'
 import FormLinkView from '@/views/FormLinkView.vue'
+import DetailPostView from '@/views/DetailPostView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,6 +37,11 @@ const router = createRouter({
       component: User_postView,
     },
     {
+      path: '/detailpost',
+      name: 'detail',
+      component: DetailPostView,
+    },
+    {
       path: '/create',
       name: 'create-post',
       component: CreatePostView,
@@ -45,7 +51,6 @@ const router = createRouter({
       name: 'frmlink',
       component: FormLinkView,
     },
-
     {
       path: '/VerifyEmail',
       name: 'Vf',

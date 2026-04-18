@@ -29,7 +29,9 @@
           </button>
           <span class="source">Source</span>
         </div>
-        <button class="voir">Voir/répondre</button>
+        <RouterLink to="/detailpost">
+        <button class="voir">Voir</button>
+        </RouterLink>
       </div>
     </div>
   </div>
