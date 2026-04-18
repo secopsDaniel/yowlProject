@@ -1,7 +1,11 @@
 <template>
   <div class="produits-card">
     <div class="post-header">
-      <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=48&h=48&q=80" alt="User" class="avatar">
+      <button class="w-12 h-12 rounded-full border-2 border-2xl border-blue-500 hover:border-blue-900 transition-all overflow-hidden">
+        <svg class="text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+      </button>
       <div class="user-info">
         <span class="nom_user">LOuLOu</span>
         <span class="Date">Il y a 2h</span>

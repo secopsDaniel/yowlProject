@@ -10,15 +10,21 @@ import User_postView from '@/views/User_postView.vue'
 import CreatePostView from '@/views/CreatePostView.vue'
 import FormLinkView from '@/views/FormLinkView.vue'
 import DetailPostView from '@/views/DetailPostView.vue'
+import IndexView from '@/views/indexView.vue'
 
  const routes = [
     { path: '/login', component: LoginView },
     { path: '/register', component: RegisterView },
     { path: '/authMail', component: ResendMail, meta: { requiresAuth: true } },
     {
-      path: '/',
+      path: '/home',
       name: 'home',
       component: HomeView,
+    },
+    {
+      path: '/',
+      name: 'index',
+      component: IndexView,
     },
     {
       path: '/profil_ad',
