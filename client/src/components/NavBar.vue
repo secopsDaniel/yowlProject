@@ -9,7 +9,7 @@
                         <li><a href="#">+ <span class="cacher">Commenter un lien</span></a></li>
                         </RouterLink>
 
-                        <RouterLink to="#">
+                        <RouterLink to="register">
                         <li><a href="#">S'inscrire</a></li>
                         </RouterLink>
                     </ul>

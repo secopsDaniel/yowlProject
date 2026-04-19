@@ -47,7 +47,7 @@ async function Login() {
         if (auth.user.is_verified  == null|| auth.user.verified_at == null) {
             router.push('/authMail')
          }else{
-              router.push('/')
+              router.push('/home')
           }
 
     }

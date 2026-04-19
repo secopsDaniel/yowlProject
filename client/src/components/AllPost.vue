@@ -19,7 +19,7 @@ defineProps({
           </svg>
       </button>
       <div class="user-info">
-        <span class="nom_user">{{ post.creator?.firstName }} {{ post.creator?.lastName }}</span>
+        <span class="nom_user">{{ post.creator?.login }}</span>
         <span class="Date">{{ formatDateFriendly(post.created_at) }}</span>
       </div>
     </div>
