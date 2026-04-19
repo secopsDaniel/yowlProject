@@ -15,11 +15,15 @@ class AdminController extends Controller
     }
     public function destroy($id)
     {
-        $user = User::find($id);
+        $user = User::withTrashed()->find($id);
 
-        $user->delete();
+        if(!$user){
+            return response()->json(["message" => "L'utilisateur n'existe pas! "], 404);
+        }
+        
+        $user->forceDelete();
 
-        return ["message" => "L'utilisateur a bien été désactivé"];
+        return response()->json(["message" => "L'utilisateur a bien été supprimé"]);
     }
 
     public function restore($id)
@@ -29,4 +33,12 @@ class AdminController extends Controller
 
         return ["message" => "L'utilisateur est de nouveau actif"];
     }
+
+    //mettre à jour les données
+    public function update(Request $request, $id){
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+        return response()->json(["message" => 'Mise à jour fait!']);
+    }
 }
+

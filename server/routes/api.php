@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -10,3 +11,8 @@ Route::get('/user', function (Request $request) {
 Route::post('/register', function (Request $req ){
     return $req->all();
     });
+//recup les utilisateurs
+Route::get('/admin/users', [AdminController::class, 'index']);
+//delete et update
+route::delete('/admin/users/{id}', [AdminController::class, 'destroy']);
+route::put('/admin/users/{id}', [AdminController::class, 'update']);
