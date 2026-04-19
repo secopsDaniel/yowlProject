@@ -37,7 +37,7 @@ class AdminController extends Controller
     //mettre à jour les données
     public function update(Request $request, $id){
         $user = User::findOrFail($id);
-        $user->update($request->all());
+        $user->update($request->only(['firstName', 'lastName', 'login', 'role']));
         return response()->json(["message" => 'Mise à jour fait!']);
     }
 }

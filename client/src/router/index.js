@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Dashbord from '../views/Dashbord.vue'
+import DashbordView from '../views/DashbordView.vue'
+import UpdateView from '@/views/UpdateView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,7 +12,12 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'AdminPage',
-      component: Dashbord,
+      component: DashbordView,
+    },
+    {
+      path: '/updateUsers',
+      name: 'Update Users',
+      component: UpdateView,
     }
   ],
 })
