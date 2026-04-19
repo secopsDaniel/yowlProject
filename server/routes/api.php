@@ -11,8 +11,13 @@ Route::get('/user', function (Request $request) {
 Route::post('/register', function (Request $req ){
     return $req->all();
     });
-//recup les utilisateurs
+/*
+Admin api route necessite authentification
+for sure !!
+*/
+Route::middleware('auth:sanctum')->group(function(){
 Route::get('/admin/users', [AdminController::class, 'index']);
-//delete et update
 route::delete('/admin/users/{id}', [AdminController::class, 'destroy']);
 route::put('/admin/users/{id}', [AdminController::class, 'update']);
+
+});

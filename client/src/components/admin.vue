@@ -15,9 +15,9 @@ import CrudUsers from './CrudUsers.vue';
       <div class="flex flex-col h-full overflow-y-auto overflow-x-hidden flex-grow pt-0 justify-between">
         <div class="flex flex-col  space-y-1 mx-1 lg:mt-1 ">
           <div class="px-5 pt-1 hidden lg:block">
-            
+
           </div>
-          
+
           <a
             class="flex flex-row items-center  justify-center lg:justify-start rounded-md h-12 focus:outline-none pr-3.5  lg:pr-6 font-semibold text-gray-500 hover:text-primary-400 cursor-pointer "
             href="#"><span class="inline-flex justify-center items-center ml-3.5 text-blue-400 hover:text-blue-600">
@@ -43,29 +43,11 @@ import CrudUsers from './CrudUsers.vue';
     <div class="w-full h-dvw flex flex-col  w-full h-dvh overflow-y-auto p-4  bg-white dark:bg-gray-900">
       <div class="w-full h-dvw h-full flex flex-col bg-white dark:bg-gray-900">
         <div class="w-full flex items-center justify-between">
-          <header class="py-4 flex items-start  flex-col">
-            <div class="flex items-start gap-2">
-              <div>
-                <h1 class="text-xl font-bold">Gestion</h1>
-                <h5 class="text-sm text-gray-600"></h5>
-              </div>
-            </div>
-          </header>
-          <div class="max-w-sm w-full flex items-center justify-center py-2 gap-2 z-50">
-            <div class="w-full flex relative flex-col gap-1">
-              <button>
-                <input type="text" class="border rounded-lg px-3 py-2 mb-0 text-sm w-full outline-none focus:border-primary-500" placeholder="chercher" required value="" >
-              </button>
-            </div>
-            <div>
-              
-            </div>
-          </div>
-        </div>
+                  </div>
         <div class="flex flex-col overflow-y-auto h-full">
-          <table class="min-w-full bg-white border undefined">
+          <!-- <table class="min-w-full bg-white border undefined"> -->
              <CrudUsers/>
-          </table>
+          <!-- </table> -->
         </div>
       </div>
     </div>
@@ -75,7 +57,7 @@ import CrudUsers from './CrudUsers.vue';
 
 <style scoped>
 .logo {
-    font-size: 35px; 
+    font-size: 35px;
     font-weight: bold;
     color: rgb(0, 98, 255);
     padding-left: 20px;
