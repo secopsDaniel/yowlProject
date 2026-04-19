@@ -1,3 +1,15 @@
+<script setup>
+import { RouterLink } from 'vue-router';
+import { formatDateFriendly } from '@/utils/dateFormatter';
+import 'primeicons/primeicons.css'
+defineProps({
+  post: {
+    type: Object,
+    required: true
+  }
+});
+</script>
+
 <template>
   <div class="produits-card">
     <div class="post-header">
@@ -7,34 +19,34 @@
           </svg>
       </button>
       <div class="user-info">
-        <span class="nom_user">LOuLOu</span>
-        <span class="Date">Il y a 2h</span>
+        <span class="nom_user">{{ post.creator?.firstName }} {{ post.creator?.lastName }}</span>
+        <span class="Date">{{ formatDateFriendly(post.created_at) }}</span>
       </div>
     </div>
      <div class="produits-info">
       <p class="description">
-        commentaire nous fatigue beaucoup je test juste parce que j'ai vu un truc... donc je dois écrire beaucoup
+        {{ post.commentaires?.[0]?.contenu || 'Aucun commentaire' }}
       </p>
     </div>
     <div class="produits-img">
-      <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=500&q=80" alt="post">
+      <img :src="post.photo_video" :alt="post.titre">
     </div>
     <div class="produits-info">
-      <h3>Title</h3>
+      <h3>{{ post.titre }}</h3>
       <p class="description">
-        description nous fatigue beaucoup je test juste parce que j'ai vu un truc... donc je dois écrire beaucoup
+        {{ post.description }}
       </p>
-      
+
       <div class="post-actions">
         <div class="left-actions">
           <button class="like-btn">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-            <span>312</span>
+            <i class="pi pi-comments" style="font-size: 1.5rem"></i>
+            <span>{{ post.commentaires?.length || 0 }}</span>
           </button>
-          <span class="source">Source</span>
+          <span class="source">{{ post.source }}</span>
         </div>
-        <RouterLink to="/detailpost">
-        <button class="voir">Voir</button>
+        <RouterLink :to="`/detailpost/${post.id}`">
+        <button class="voir">Commenter</button>
         </RouterLink>
       </div>
     </div>
@@ -49,7 +61,7 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     transition: all 0.2s ease;
     border: 1px solid #e5e7eb;
-    max-width: 350px; 
+    max-width: 350px;
 }
 
 .post-header {
@@ -99,7 +111,7 @@
 }
 
 .produits-info h3 {
-    font-size: 16px; 
+    font-size: 16px;
     font-weight: 700;
     margin-bottom: 6px;
     color: #111827;

@@ -1,131 +1,149 @@
 <script setup>
+import { onMounted, ref } from 'vue';
+import { useRoute,} from 'vue-router';
 import NavBar from '@/components/NavBar.vue';
 import SideBar from '@/components/SideBar.vue';
+import { usePostStore } from '@/stores/PostStore';
+import { formatDateFriendly } from '@/utils/dateFormatter';
+import 'primeicons/primeicons.css'
+const route = useRoute();
+const postStore = usePostStore();
+const post = ref(null);
+const newComment = ref('');
+
+const submitComment = async () => {
+  if (!newComment.value.trim()) return;
+  try {
+    await postStore.createComment({
+      contenu: newComment.value,
+      id_post: post.value.id,
+    });
+    newComment.value = '';
+    // Recharger le post pour voir le nouveau commentaire
+    const res = await postStore.getPostById(post.value.id);
+    post.value = res.data;
+  } catch (err) {
+    console.error('Erreur lors de l\'ajout du commentaire', err);
+  }
+};
 
 
+
+onMounted(async () => {
+  const postId = route.params.id;
+  try {
+    const res = await postStore.getPostById(postId);
+    post.value = res.data;
+  } catch (err) {
+    console.error('Erreur lors du chargement du post', err);
+  }
+});
 </script>
 <template>
     <NavBar/>
     <SideBar/>
-    <main class="flex-1 ml-20 pt-24 min-h-screen bg-gray-50">
-      <div class="produits-card">
-    <div class="post-header">
-      <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=48&h=48&q=80" alt="User" class="avatar">
-      <div class="user-info">
-        <span class="nom_user">LOuLOu</span>
-        <span class="Date">Il y a 2h</span>
-      </div>
-    </div>
-     <div class="produits-info">
-      <p class="description">
-        commentaire nous fatigue beaucoup je test juste parce que j'ai vu un truc... donc je dois écrire beaucoup
-      </p>
-    </div>
-    <div class="produits-img">
-      <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=500&q=80" alt="post">
-    </div>
-    <div class="produits-info">
-      <h3>Title</h3>
-      <p class="description">
-        description nous fatigue beaucoup je test juste parce que j'ai vu un truc... donc je dois écrire beaucoup
-      </p>
-      
-      <div class="post-actions">
-        <div class="left-actions">
-          <button class="like-btn">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-            <span>312</span>
-          </button>
-          <span class="source">Source</span>
-        </div>
-        <RouterLink to="#">
-        <button class="voir">Modifier</button>
-        </RouterLink>
-      </div>
-    </div>
-  </div>
-  
-  <div class="max-w-3xl mx-10">
-        <div class="flex items-center justify-between mb-10">
-            <h2 class="text-2xl font-extrabold tracking-tight">Commentaires <span class="text-gray-400 font-medium text-lg">42</span></h2>
+    <main class="flex-1 ml-20 pt-24 min-h-screen bg-gray-50 flex justify-center">
+      <div class="max-w-4xl w-full px-4">
+        <div v-if="post" class="produits-card mx-auto mb-8">
+          <div class="post-header">
+         <button class="w-12 h-12 rounded-full border-2 border-2xl border-blue-500 hover:border-blue-900 transition-all overflow-hidden">
+        <svg class="text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+      </button>
+            <div class="user-info">
+              <span class="nom_user">{{ post.creator?.firstName }} {{ post.creator?.lastName }}</span>
+              <span class="Date">{{ formatDateFriendly(post.created_at) }}</span>
+            </div>
+          </div>
+          <div class="produits-info">
+            <p class="description">
+              {{ post.commentaires?.[0]?.contenu || 'Aucun commentaire initial' }}
+            </p>
+          </div>
+          <div class="produits-img">
+            <img :src="post.photo_video" :alt="post.titre">
+          </div>
+          <div class="produits-info">
+            <h3>{{ post.titre }}</h3>
+            <p class="description">
+              {{ post.description }}
+            </p>
+
+            <div class="post-actions">
+              <div class="left-actions">
+                <button class="like-btn">
+                  <i class="pi pi-comments" style="font-size: 1.5rem"></i>  
+                  <span>{{ post.commentaires?.length || 0 }}</span>
+                </button>
+                <span class="source">{{ post.source }}</span>
+              </div>
+              <a :href="post.links" target="_blank" rel="noopener noreferrer">
+                <button class="voir">Consuler la source </button>
+              </a>
+            </div>
+          </div>
         </div>
 
-        <div class="flex gap-4 mb-12">
+        <div v-if="post" class="max-w-3xl mx-auto">
+          <div class="flex items-center justify-between mb-10">
+            <h2 class="text-2xl font-extrabold tracking-tight">Commentaires <span class="text-gray-400 font-medium text-lg">{{ post.commentaires?.length || 0 }}</span></h2>
+          </div>
+
+          <div class="flex gap-4 mb-12">
             <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-500 to-blue-500 flex-shrink-0"></div>
             <div class="flex-1">
-                <input type="text" placeholder="Ajouter un commentaire..." 
-                       class="w-full bg-transparent border-b border-gray-700 pb-2 focus:border-white focus:outline-none transition-all placeholder-gray-500 text-sm">
-                <div class="flex justify-end gap-3 mt-3 opacity-0 hover:opacity-100 transition-opacity">
-                    <button class="px-4 py-2 text-sm font-bold hover:bg-white/10 rounded-full transition">Annuler</button>
-                    <button class="px-4 py-2 text-sm font-bold bg-blue-600 rounded-full hover:bg-blue-500 transition">Publier</button>
-                </div>
+              <input v-model="newComment" type="text" placeholder="Ajouter un commentaire..."
+                     class="w-full bg-transparent border-b border-gray-700 pb-2 focus:border-white focus:outline-none transition-all placeholder-gray-500 text-sm">
+              <div class="flex justify-end gap-3 mt-3">
+                <button class="px-4 py-2 text-sm font-bold hover:bg-white/10 rounded-full transition">Annuler</button>
+                <button @click="submitComment" class="px-4 py-2 text-sm font-bold bg-blue-600 rounded-full hover:bg-blue-500 transition">Publier</button>
+              </div>
             </div>
+          </div>
+
+          <div class="space-y-6">
+            <div v-for="comment in post.commentaires" :key="comment.id" class="yt-glass rounded-3xl p-5 group">
+              <div class="flex gap-4">
+                <button class="w-12 h-12 rounded-full border-2 border-2xl border-blue-500 hover:border-blue-900 transition-all overflow-hidden">
+        <svg class="text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+      </button>
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="text-sm font-bold">{{ comment.user?.firstName }} {{ comment.user?.lastName }}</span>
+                    <span class="text-xs text-gray-500">{{ formatDateFriendly(comment.created_at) }}</span>
+                  </div>
+                  <p class="text-sm text-gray-700 leading-relaxed mb-4">
+                    {{ comment.contenu }}
+                  </p>
+                  <div class="flex items-center gap-6">
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="space-y-6">
-            
-            <div class="yt-glass rounded-3xl p-5 group">
-                <div class="flex gap-4">
-                    <img src="https://i.pravatar.cc/150?u=1" class="w-10 h-10 rounded-full" alt="">
-                    <div class="flex-1">
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="text-sm font-bold">@OmerDesign</span>
-                            <span class="text-xs text-gray-500">il y a 4 min</span>
-                        </div>
-                        <p class="text-sm text-gray-700 leading-relaxed mb-4">
-                            Cet effet de morphisme au scroll est absolument incroyable. Le code est propre et l'interface est ultra fluide ! 🔥
-                        </p>
-                        <div class="flex items-center gap-6">
-                            <div class="flex items-center gap-1.5 group/like">
-                                <button class="btn-interact p-2 rounded-full hover:bg-white/10 group-hover/like:text-blue-400">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.708c.95 0 1.708.758 1.708 1.708 0 .151-.02.302-.059.447l-2.316 8.52c-.156.575-.68.973-1.275.973H7M14 10a2 2 0 00-2-2h-3m4 2l-3 3M7 10H4a2 2 0 00-2 2v7a2 2 0 002 2h3" />
-                                    </svg>
-                                </button>
-                                <span class="text-xs font-medium text-gray-400">1.2k</span>
-                            </div>
-                            <button class="btn-interact p-2 rounded-full hover:bg-white/10">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round"  stroke-linejoin="round" stroke-width="2" d="M10 14h4m-4-4h4m1 11H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
-                            </button>
-                            <span class="text-xs font-bold text-gray-400 cursor-pointer hover:text-white transition">RÉPONDRE</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="yt-glass rounded-3xl p-5">
-                <div class="flex gap-4">
-                    <img src="https://i.pravatar.cc/150?u=2" class="w-10 h-10 rounded-full" alt="">
-                    <div class="flex-1">
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="text-sm font-bold">@TechLover</span>
-                            <span class="text-xs text-gray-500">il y a 1 heure</span>
-                        </div>
-                        <p class="text-sm text-gray-200 mb-3">Minimaliste. J'adore.</p>
-                        <div class="flex items-center gap-4">
-                             <button class="btn-interact text-xs font-bold text-gray-500 hover:text-white transition">2 RÉPONSES</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+        <div v-else class="flex justify-center items-center min-h-screen">
+          <p>Chargement du post...</p>
         </div>
-    </div>
-
-  </main>
+      </div>
+    </main>
 </template>
 
 <style scoped>
 .produits-card {
     background-color: white;
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    transition: all 0.3s ease;
     border: 1px solid #e5e7eb;
-    max-width: 350px; 
+    max-width: 800px;
+    width: 100%;
 }
 
 .post-header {
@@ -175,7 +193,7 @@ import SideBar from '@/components/SideBar.vue';
 }
 
 .produits-info h3 {
-    font-size: 16px; 
+    font-size: 16px;
     font-weight: 700;
     margin-bottom: 6px;
     color: #111827;

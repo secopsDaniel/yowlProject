@@ -1,7 +1,40 @@
 <script setup>
+import { onMounted, onUnmounted } from 'vue';
 import AllPost from '@/components/AllPost.vue';
 import NavBar from '@/components/NavBar.vue';
 import SideBar from '@/components/SideBar.vue';
+import { usePostStore } from '@/stores/PostStore';
+
+const postStore = usePostStore();
+
+let scrollListener = null;
+
+const handleScroll = () => {
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const windowHeight = window.innerHeight;
+  const documentHeight = document.documentElement.scrollHeight;
+
+  if (scrollTop + windowHeight >= documentHeight - 100) {
+    postStore.loadMorePosts();
+  }
+};
+
+function getPostByCategory(categoryId) {
+  postStore.fetchAllPosts({ categ_id: categoryId });
+}
+
+onMounted(async () => {
+  await postStore.fetchCategories();
+  await postStore.fetchAllPosts();
+  scrollListener = handleScroll;
+  window.addEventListener('scroll', scrollListener);
+});
+
+onUnmounted(() => {
+  if (scrollListener) {
+    window.removeEventListener('scroll', scrollListener);
+  }
+});
 </script>
 
 <template>
@@ -16,21 +49,25 @@ import SideBar from '@/components/SideBar.vue';
                 <div class="container mx-auto px-4">
                     <div class="container-categories">
                         <div class="categories-scroll">
-                            <a class="categorie">catégorie_nom</a>
-                            <a class="categorie">catégorie_nom</a>
-                            <a class="categorie">catégorie_nom</a>
-                            <a class="categorie">catégorie_nom</a>
-                            <a class="categorie">catégorie_nom</a>
-                            <a class="categorie">catégorie_nom</a>
-                            <a class="categorie">catégorie_nom</a>
-                            <a class="categorie">catégorie_nom</a>
-                            <a class="categorie">catégorie_nom</a>
+                            <a class="categorie" v-for="category in postStore.categories" :key="category.id" @click="getPostByCategory(category.id)">
+                                {{ category.title }}
+                            </a>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <AllPost/>
+            <div class="posts-container">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+                    <AllPost v-for="post in postStore.posts" :key="post.id" :post="post" />
+                </div>
+                <div v-if="postStore.loading" class="text-center py-4">
+                    Chargement...
+                </div>
+                <div v-if="!postStore.hasMore && postStore.posts.length > 0" class="text-center py-4">
+                    Fin des posts
+                </div>
+            </div>
             
         </main>
     </div>

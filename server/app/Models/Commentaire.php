@@ -8,13 +8,14 @@ use App\Models\User;
 
 class Commentaire extends Model
 {
-    
+
  protected $fillable = [
         'contenu',
         'user_id',
         'id_post',
-        'likes',
+        'comParent_id',
         'waring',
+        'like',
     ];
 
 
@@ -24,6 +25,16 @@ class Commentaire extends Model
     public function user (){
         return $this->belongsTo(User::class);
     }
-      
+
+    public function parent()
+    {
+        return $this->belongsTo(Commentaire::class, 'comParent_id');
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(Commentaire::class, 'comParent_id');
+    }
+
 
 }

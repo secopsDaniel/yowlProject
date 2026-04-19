@@ -9,7 +9,7 @@ export const kyInstance = ky.create({
    Accept: 'application/json',
  },
 
- timeout:5000,
+ timeout: 60000, 
 
 
 })
@@ -24,15 +24,48 @@ export function getAuthHeaders() {
 
 export async function parseApiError(error) {
   if (!error.response) {
-    return { message: "Network error", status: 0 };
+    // Erreur réseau (
+    return {
+      message: "Erreur de connexion réseau. Vérifiez votre connexion internet.",
+      status: 0,
+      errors: {},
+      type: 'network'
+    };
   }
 
   const status = error.response.status;
-  const data = await error.response.json().catch(() => ({}));
+  let data;
 
+  try {
+    data = await error.response.json();
+  } catch {
+    // Si la réponse n'est pas du JSON valide
+    return {
+      message: `Erreur serveur (${status})`,
+      status,
+      errors: {},
+      type: 'server'
+    };
+  }
+
+  // Gestion spécifique des erreurs 422 (validation)
+  if (status === 422) {
+    const validationErrors = data.errors || {};
+    const firstError = Object.values(validationErrors)[0]?.[0] || data.message || "Erreurs de validation";
+
+    return {
+      status: 422,
+      message: firstError,
+      errors: validationErrors,
+      type: 'validation'
+    };
+  }
+
+  // Gestion des autres erreurs
   return {
     status,
-    message: data.message || "Error",
+    message: data.message || `Erreur ${status}`,
     errors: data.errors || {},
+    type: 'server'
   };
 }

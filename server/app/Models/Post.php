@@ -26,14 +26,14 @@ class Post extends Model
     public function creator(){
         return $this->belongsTo(User::class);
     }
-    
+
      public function categorie(){
-        return $this->belongsTo(Categorie::class);
+        return $this->belongsTo(Categorie::class,  'categ_id','id');
     }
     public function commentaires (){
         return $this->hasMany(Commentaire::class, 'id_post', 'id' );
     }
 
-     
-    
+
+
 }

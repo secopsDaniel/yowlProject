@@ -13,9 +13,9 @@ import DetailPostView from '@/views/DetailPostView.vue'
 import IndexView from '@/views/indexView.vue'
 
  const routes = [
-    { path: '/login', component: LoginView },
-    { path: '/register', component: RegisterView },
-    { path: '/authMail', component: ResendMail, meta: { requiresAuth: true } },
+    { path: '/login',name: 'login', component: LoginView },
+    { path: '/register', name: 'register', component: RegisterView },
+    { path: '/authMail', name: 'resend-mail', component: ResendMail, meta: { requiresAuth: true } },
     {
       path: '/home',
       name: 'home',
@@ -40,6 +40,7 @@ import IndexView from '@/views/indexView.vue'
       path: '/Profil_user',
       name: 'profil_us',
       component: Profil_adView,
+       meta: { requiresAuth: true },
     },
     {
       path: '/User_post',
@@ -47,9 +48,10 @@ import IndexView from '@/views/indexView.vue'
       component: User_postView,
     },
     {
-      path: '/detailpost',
+      path: '/detailpost/:id',
       name: 'detail',
       component: DetailPostView,
+       meta: { requiresAuth: true },
     },
     {
       path: '/create',

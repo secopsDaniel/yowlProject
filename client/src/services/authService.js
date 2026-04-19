@@ -28,7 +28,9 @@ export const authService = {
   },
 
   async logout() {
-    await kyInstance.post("logout");
+    await kyInstance.post("logout",{
+      headers : getAuthHeaders()
+    }).json();
   },
 
   async getme() {

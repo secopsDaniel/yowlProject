@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\postController;
 use App\Http\Controllers\Categories;
-use App\Http\Controllers\PostC;
+use App\Http\Controllers\CommentaireController;
 
 /*
 Authentification api routes
@@ -14,6 +14,7 @@ these route don't need authentifications
 */
 Route::post('/register', [AuthController::class, 'SignUp']);
 Route::post('/login', [AuthController::class, 'SignIn']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 /*
 User api route need authentifiation
@@ -37,9 +38,14 @@ Post api route need authentification
 */
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/post', [postController::class, 'getDataFromLink']);
-    Route::post('/posts/fetch', [PostC::class, 'fetch']);
     Route::post('/post/update/{id}', [postController::class, 'UpdatePost']);
     Route::post('/post/{id}', [postController::class, 'getPOst']);
+    Route::get('/posts', [postController::class, 'getAllPosts']);
+
+    Route::post('/comments', [CommentaireController::class, 'createComment']);
+    Route::put('/comments/{id}', [CommentaireController::class, 'updateComment']);
+    Route::delete('/comments/{id}', [CommentaireController::class, 'deleteComment']);
+    Route::post('/comments/{id}/like', [CommentaireController::class, 'likeComment']);
 
     Route::get('/categories', [Categories::class, 'getAll']);
     Route::post('/categories', [Categories::class, 'create']);

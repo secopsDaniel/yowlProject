@@ -11,43 +11,75 @@ class postController extends Controller
 {
     public function getDataFromLink(Request $req)
     {
-        $data = $req->validate([
-            'titre' => ['required', 'string', 'min:3', 'unique:posts'],
-            'description' => ['required', 'string', 'min:10'],
-            'links' => ['required', 'string', 'url', 'unique:posts'],
-            'categ_id' => ['required', 'exists:categories,id'],
-            'source' => ['required', 'string', 'min:3'],
-            'commentaire' => ['nullable', 'string', 'min:3'],
-        ]);
+        try {
+            \Log::info('Début de création de post', ['user_id' => $req->user()->id]);
 
-        $screenshotUrl = ScreenShotService::TakeScreenshot($data['links']);
-
-        $post = Post::create([
-            'titre' => $data['titre'],
-            'description' => $data['description'],
-            'links' => $data['links'],
-            'source' => $data['source'],
-            'photo_video' => $screenshotUrl,
-            'creator_id' => $req->user()->id,
-            'categ_id' => $data['categ_id'],
-        ]);
-
-        if (!empty($data['commentaire'])) {
-            Commentaire::create([
-                'contenu' => $data['commentaire'],
-                'user_id' => $req->user()->id,
-                'id_post' => $post->id,
-                'likes' => 0,
-                'waring' => 0,
+            $data = $req->validate([
+                'titre' => ['required', 'string', 'min:3', 'unique:posts'],
+                'description' => ['required', 'string', 'min:10'],
+                'links' => ['required', 'string', 'url', 'unique:posts'],
+                'categ_id' => ['required', 'exists:categories,id'],
+                'source' => ['required', 'string', 'min:3'],
+                'commentaire' => ['nullable', 'string', 'min:3'],
             ]);
+
+            \Log::info('Validation réussie, génération de screenshot', ['url' => $data['links']]);
+
+            $screenshotUrl = ScreenShotService::TakeScreenshot($data['links']);
+
+            \Log::info('Screenshot généré', ['screenshot_url' => $screenshotUrl]);
+
+            $post = Post::create([
+                'titre' => $data['titre'],
+                'description' => $data['description'],
+                'links' => $data['links'],
+                'source' => $data['source'],
+                'photo_video' => $screenshotUrl,
+                'creator_id' => $req->user()->id,
+                'categ_id' => $data['categ_id'],
+            ]);
+
+            \Log::info('Post créé', ['post_id' => $post->id]);
+
+            if (!empty($data['commentaire'])) {
+                Commentaire::create([
+                    'contenu' => $data['commentaire'],
+                    'user_id' => $req->user()->id,
+                    'id_post' => $post->id,
+                    'waring' => 0,
+                ]);
+
+                \Log::info('Commentaire créé', ['post_id' => $post->id]);
+            }
+
+            $post = Post::with(['creator', 'categorie', 'commentaires.user'])->find($post->id);
+
+            \Log::info('Post créé avec succès', ['post_id' => $post->id]);
+
+            return response()->json([
+                'status' => 'succès',
+                'data' => $post,
+            ], 201);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::warning('Erreur de validation', [
+                'user_id' => $req->user()->id,
+                'errors' => $e->errors()
+            ]);
+            throw $e; // Laravel gère automatiquement les ValidationException
+
+        } catch (\Exception $e) {
+            \Log::error('Erreur lors de la création du post', [
+                'user_id' => $req->user()->id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'message' => 'Erreur interne du serveur',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $post = Post::with(['creator', 'categorie', 'commentaires.user'])->find($post->id);
-
-        return response()->json([
-            'status' => 'succès',
-            'data' => $post,
-        ], 201);
     }
 
     public function UpdatePost(Request $req, $id)
@@ -74,7 +106,7 @@ class postController extends Controller
             'contenu' => $data['commentaire'],
             'user_id' => $id_user,
             'id_post' => $id,
-            'likes' => 0,
+            'like' => 0,
             'waring' => 0,
         ]);
 
@@ -96,4 +128,21 @@ class postController extends Controller
             'data' => $post,
         ]);
     }
+
+    public function getAllPosts(Request $req)
+    {
+        $cat = $req->query('categ_id');
+        if ($cat) {
+             $posts = Post::with(['creator', 'categorie', 'commentaires.user'])->where('categ_id', $cat)->latest()->paginate(10);
+        } else {
+             $posts = Post::with(['creator', 'categorie', 'commentaires.user'])->latest()->paginate(10);
+        };
+
+        return response()->json([
+            'status' => 'succès',
+            'data' => $posts,
+        ]);
+    }
+
+    
 }
