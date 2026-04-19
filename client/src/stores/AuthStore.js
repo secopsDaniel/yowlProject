@@ -86,5 +86,18 @@ export const useAuthStore = defineStore("auth", {
       await authService.logout();
       this.user = null;
     },
+
+    async editMe(id,data){
+      this.errors = null
+      try {
+        const res = await authService.editMe(id,data);
+        return res;
+
+      } catch (error) {
+       const handleError = await parseApiError(error);
+       this.errors = handleError;
+      }
+    }
+
   },
 });

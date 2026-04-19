@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/AuthStore";
 
@@ -58,6 +58,11 @@ const sendAuthEmail = async () => {
 const goBack = () => {
   router.push("/login");
 };
+onMounted(()=>{
+   if (authStore.user.is_verified || authStore.user.verified_at) {
+          router.push("/home")
+   }
+})
 </script>
 
 <style scoped>

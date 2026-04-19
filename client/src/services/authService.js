@@ -40,4 +40,13 @@ export const authService = {
 
     ).json();
   },
+
+async editMe(id,data) {
+  await kyInstance.post(`user/edit/${id}`,{
+  headers:getAuthHeaders(),
+  json:data
+  }).json();
+
+}
+
 };

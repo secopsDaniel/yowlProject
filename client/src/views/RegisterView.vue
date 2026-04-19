@@ -70,8 +70,8 @@ function validerInscription() {
     }
 
     // PASSWORD
-    if (credentials.value.password.length < 4 || credentials.value.password.length > 20) {
-        errorCred.value.password = 'Mot de passe entre 4 et 20 caractères';
+    if (credentials.value.password.length < 8 || credentials.value.password.length > 25) {
+        errorCred.value.password = 'Mot de passe entre 8 et 25 caractères';
     }
 
     // CONFIRM PASSWORD

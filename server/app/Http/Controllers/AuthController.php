@@ -98,6 +98,8 @@ class AuthController extends Controller
     return redirect(env('FRONTEND_URL') . '/login');
 
     }
+
+
     public function logout(Request $request){
         $request->user()->currentAccessToken()->delete();
 
@@ -105,4 +107,30 @@ class AuthController extends Controller
             'message' => 'Déconnecté avec succès'
         ]);
 }
+
+
+   public function editUserData($id, Request $req){
+    $data = $req->validate([
+        'firstName' => 'required|string|max:77',
+        'lastName' => 'required|string|max:77',
+        'login' => 'required|string',
+        'gender' => 'required|string',
+        'birthday' => 'required|date',
+        'email' => 'required|email',
+
+        ]);
+
+
+    $user = User::find($id);
+    if ($user) {
+        $user->update($data);
+    }
+     return response()->json([
+            'status' => 'succès',
+            'message' => "vos données ont été modifiées avec succès",
+        ]);
+
+
+   }
+
 }

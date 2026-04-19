@@ -10,14 +10,23 @@ use App\Http\Controllers\CommentaireController;
 
 /*
 Authentification api routes
-these route don't need authentifications
+ces routes n'ont pas besoin d'authentifications
 */
 Route::post('/register', [AuthController::class, 'SignUp']);
 Route::post('/login', [AuthController::class, 'SignIn']);
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 /*
-User api route need authentifiation
+Authentification api routes
+ces routes  ont besoin d'authentification
+*/
+Route::middleware('auth:sanctum')->group(function () {
+Route::post('/logout', [AuthController::class, 'logout']);
+Route::post('/user/edit/{id}', [AuthController::class, 'editUserData']);
+
+});
+
+/*
+User api route : besoin d'authentifiation
 */
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
@@ -34,19 +43,24 @@ Route::post('/email/verification-notification', function (Request $request) {
 })->middleware(['auth:sanctum', 'throttle:6,1'])->name('verification.send');
 
 /*
-Post api route need authentification
+Post api and commentaires route ont besoin authentification
 */
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/post', [postController::class, 'getDataFromLink']);
     Route::post('/post/update/{id}', [postController::class, 'UpdatePost']);
     Route::post('/post/{id}', [postController::class, 'getPOst']);
-    Route::get('/posts', [postController::class, 'getAllPosts']);
 
     Route::post('/comments', [CommentaireController::class, 'createComment']);
     Route::put('/comments/{id}', [CommentaireController::class, 'updateComment']);
     Route::delete('/comments/{id}', [CommentaireController::class, 'deleteComment']);
     Route::post('/comments/{id}/like', [CommentaireController::class, 'likeComment']);
 
-    Route::get('/categories', [Categories::class, 'getAll']);
     Route::post('/categories', [Categories::class, 'create']);
 });
+
+/*
+Post api and categories route qui n'ont  besoin d'authentification
+*/
+
+    Route::get('/categories', [Categories::class, 'getAll']);
+    Route::get('/posts', [postController::class, 'getAllPosts']);

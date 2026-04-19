@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useAuthStore } from '@/stores/AuthStore'
 import { useRouter } from 'vue-router'
 const errorServer = ref()
@@ -59,6 +59,11 @@ async function Login() {
   }
 
 }
+onMounted( ()=>{
+   if (auth.isAuthenticated && (auth.user.is_verified || auth.user.verified_at )) {
+     router.push("/home")
+   }
+})
 </script>
 
 
@@ -191,7 +196,7 @@ async function Login() {
 </template>
 
 <style scoped>
-/* 
+/*
 .page-auth {
   background-color: #F0F2F9;
   height: 100vh;

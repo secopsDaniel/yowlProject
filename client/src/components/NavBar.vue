@@ -1,3 +1,8 @@
+<script setup>
+import { useAuthStore } from '@/stores/AuthStore';
+const auth = useAuthStore();
+</script>
+
 <template>
     <header class="user-nav-fixed">
         <div class="container-nav">
@@ -10,7 +15,7 @@
                         </RouterLink>
 
                         <RouterLink to="register">
-                        <li><a href="#">S'inscrire</a></li>
+                        <li v-if="!auth.isAuthenticated"><a href="#">S'inscrire</a></li>
                         </RouterLink>
                     </ul>
                 </nav>
