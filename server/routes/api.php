@@ -2,6 +2,7 @@
 use App\Models\User;
 use App\Http\Controllers\AuthController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\postController;
@@ -36,7 +37,6 @@ Mail api routes
 */
 Route::get('/email/verify/{id}/{hash}',[AuthController::class, 'Verify_Email'])->name('verification.verify');
 
-
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
     return response()->json(['message' => 'Le lien de vérification est envoyé, Vérifiez vos emails!']);
@@ -64,3 +64,14 @@ Post api and categories route qui n'ont  besoin d'authentification
 
     Route::get('/categories', [Categories::class, 'getAll']);
     Route::get('/posts', [postController::class, 'getAllPosts']);
+/*
+Admin api route necessite authentification
+for sure !!
+*/
+Route::middleware('auth:sanctum')->group(function(){
+Route::get('/admin/users', [AdminController::class, 'index']);
+route::delete('/admin/users/{id}', [AdminController::class, 'destroy']);
+route::put('/admin/users/{id}', [AdminController::class, 'update']);
+
+});
+

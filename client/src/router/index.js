@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import ResendMail from '@/views/ResendMail.vue'
@@ -11,6 +12,9 @@ import CreatePostView from '@/views/CreatePostView.vue'
 import FormLinkView from '@/views/FormLinkView.vue'
 import DetailPostView from '@/views/DetailPostView.vue'
 import IndexView from '@/views/indexView.vue'
+import DashbordView from '../views/DashbordView.vue'
+import UpdateView from '@/views/UpdateView.vue'
+
 
  const routes = [
     { path: '/login',name: 'login', component: LoginView },
@@ -68,6 +72,19 @@ import IndexView from '@/views/indexView.vue'
       path: '/VerifyEmail',
       name: 'Vf',
       component: () => import('../views/VerifyEmailView.vue'),
+    },
+    {
+      path: '/dashboard',
+      name: 'AdminPage',
+      component: DashbordView,
+        meta: { requiresAuth: true },
+
+    },
+    {
+      path: '/updateUsers',
+      name: 'Update Users',
+      component: UpdateView,
+      meta: { requiresAuth: true },
     }
 
   ]
@@ -90,7 +107,6 @@ router.beforeEach(async (to, from, next) => {
        next();
   }
 });
-
 
 
 

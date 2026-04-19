@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Database\Seeders\Categories;
+use Illuminate\Support\Facades\Hash;
 
 
 class DatabaseSeeder extends Seeder
@@ -17,9 +18,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+    User::updateOrCreate([
+        'firstName' => "admin",
+        'lastName'  => 'yowl',
+        'login'    => 'yowl administrator',
+        'email'  => 'admin@yowl.com',
+        'gender' => 'Homme',
+        'role'  => 'admin',
+         'birthday' => '19-04-2026',
+         'password' =>Hash::make('admin123'),
+         'verified_at'=> now(),
+         'is_verified' => true
+
+
+    ]);
        $cat = new  Categories();
        $cat->run();
-        // User::factory(10)->create();
+
 
 
     }
