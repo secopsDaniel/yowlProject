@@ -9,7 +9,7 @@ export const kyInstance = ky.create({
    Accept: 'application/json',
  },
 
- timeout: 60000, 
+ timeout: 60000,
 
 
 })

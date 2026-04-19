@@ -78,7 +78,7 @@ export const useAuthStore = defineStore("auth", {
       return res;
       } catch (error) {
        const apiError = await parseApiError(error);
-       this.errors = apiError
+       this.errors = apiError.message
       }
 
     },

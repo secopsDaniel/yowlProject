@@ -19,7 +19,7 @@
 
       <p v-if="message" class="message">{{ message }}</p>
       <p v-if="authStore.errors" class="error">
-        {{ authStore.errors?.general || "Erreur serveur" }}
+        {{ authStore.errors || error || "Erreur serveur" }}
       </p>
 
       <!-- bouton retour -->
@@ -40,6 +40,7 @@ const router = useRouter();
 
 const loading = ref(false);
 const message = ref("");
+const error = ref('')
 
 const sendAuthEmail = async () => {
   loading.value = true;
@@ -48,8 +49,8 @@ const sendAuthEmail = async () => {
   try {
   const reponse = await authStore.AuthMail();
     message.value = reponse.message ||"Email envoyé avec succès ✔";
-  } catch (e) {
-    message.value = "Erreur lors de l’envoi.";
+  } catch  {
+    error.value = "Erreur lors de l'envoi.";
   } finally {
     loading.value = false;
   }

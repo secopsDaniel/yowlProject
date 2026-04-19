@@ -124,24 +124,25 @@ onMounted( ()=>{
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-5">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-               <label class="block text-sm font-medium text-gray-700 mb-2 text-red-500">{{ error.email }}</label>
+
               <input
                 type="email"
                 v-model="credential.email"
                 placeholder="Ex: example@gmail.com"
                 class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
+              <p v-if="error.email" class="text-red-600 text-xs mt-1">{{ error.email }}</p>
             </div>
 
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-               <label class="block text-sm font-medium text-gray-700 mb-2 text-red-500">{{ error.password }}</label>
               <input
                 type="password"
                 v-model="credential.password"
                 placeholder="Password"
                 class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
+              <p v-if="error.password" class="text-red-600 text-xs mt-1">{{ error.password }}</p>
             </div>
           </div>
 
@@ -154,7 +155,10 @@ onMounted( ()=>{
               Connexion
             </button>
             <div class="text-sm text-gray-500">
-              <p>Vous n'avez pas de compte ? <a href="/register" class="text-blue-500 hover:underline">S'inscrire</a></p>
+              <RouterLink to="register">
+              <p>Vous n'avez pas de compte ?
+                <a  class="text-blue-500 hover:underline">S'inscrire</a></p>
+                </RouterLink>
             </div>
           </div>
         </form>
