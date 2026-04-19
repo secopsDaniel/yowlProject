@@ -64,7 +64,100 @@ async function Login() {
 
 
 <template>
-  <div class="page-auth">
+  <div class="bg-[#101A26] min-h-screen">
+  <!-- Enquiry Section -->
+<section class="relative max-w-7xl mx-auto px-4 py-16">
+  <!-- Header Section -->
+  <div class="text-center mb-12">
+    <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+      CONNE<span class="text-blue-600">XION</span>
+    </h1>
+  </div>
+  <!-- Form Container -->
+  <div class="bg-white rounded-xl shadow-2xl overflow-hidden">
+    <div class="md:flex">
+      <!-- Left Side -->
+      <div class="md:w-1/3 bg-gradient-to-br from-blue-600 to-blue-800 p-10 text-white flex flex-col justify-between">
+        <div>
+          <h2 class="text-2xl font-bold mb-4">Bon retour parmi nous !</h2>
+          <ul class="space-y-4">
+            <li class="flex items-start">
+              <svg class="h-6 w-6 text-blue-200 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>Commentez tout sur internet</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="h-6 w-6 text-blue-200 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>Partagez vos commentaires avec la communauté</span>
+            </li>
+            <li class="flex items-start">
+              <svg class="h-6 w-6 text-blue-200 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>Respectez nos politiques de confidentialités</span>
+            </li>
+          </ul>
+        </div>
+        <div class="mt-8">
+          <h3 class="text-lg font-semibold mb-2">Besoin d'assistance?</h3>
+          <p class="text-blue-100 mb-2">
+            Contactez-nous :
+            <a href="mailto:yowl@gmail.com" class="underline hover:text-purple-900">yowl@gmail.com</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Side - Form -->
+      <div class="md:w-2/3 p-10">
+        <form @submit.prevent="Login" class="space-y-8">
+           <div v-if="auth.errors" class="error">
+              {{ errorServer}}
+            </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-5">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+               <label class="block text-sm font-medium text-gray-700 mb-2 text-red-500">{{ error.email }}</label>
+              <input
+                type="email"
+                v-model="credential.email"
+                placeholder="Ex: example@gmail.com"
+                class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+               <label class="block text-sm font-medium text-gray-700 mb-2 text-red-500">{{ error.password }}</label>
+              <input
+                type="password"
+                v-model="credential.password"
+                placeholder="Password"
+                class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <div class="flex flex-col items-center gap-4">
+            <button
+              type="submit"
+              class="w-full md:w-auto px-8 py-3 bg-blue-600 text-white font-medium rounded-xl shadow-sm hover:bg-blue-700 transition duration-300"
+            >
+              Connexion
+            </button>
+            <div class="text-sm text-gray-500">
+              <p>Vous n'avez pas de compte ? <a href="/register" class="text-blue-500 hover:underline">S'inscrire</a></p>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+  <!-- <div class="page-auth">
     <div class="macarte">
       <h1 class="titre-violet">CONNEXION</h1>
 
@@ -93,11 +186,12 @@ async function Login() {
         <p>Vous n'avez pas de compte ? <a href="/register">S'inscrire</a></p>
       </div>
     </div>
+  </div> -->
   </div>
 </template>
 
 <style scoped>
-
+/* 
 .page-auth {
   background-color: #F0F2F9;
   height: 100vh;
@@ -134,15 +228,16 @@ async function Login() {
   font-weight: bold;
   color: grey;
 }
-
+*/
 .error{
    display: block;
   margin-bottom: 8px;
     margin-top: 5px;
   font-size: 14px;
   color: red;
+  text-align: center;
 }
-
+/*
 .champ input {
   width: 100%;
   padding: 10px;
@@ -178,5 +273,5 @@ async function Login() {
   .ma-carte {
     padding: 20px;
   }
-}
+} */
 </style>
