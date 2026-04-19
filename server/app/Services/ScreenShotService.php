@@ -9,10 +9,10 @@ class ScreenShotService
 {
     public static function TakeScreenshot($link)
     {
-        $fileName = 'screenshots/' . uniqid() . '.png';
+              $fileName = 'screenshots/' . uniqid() . '.png';
 
         try {
-            Screenshot::url($link)->disk('s3')->save($fileName);
+                 Screenshot::url($link)->disk('s3')->save($fileName);
 
             if (Storage::disk('s3')->exists($fileName)) {
                 return Storage::disk('s3')->url($fileName);
