@@ -13,7 +13,7 @@ return new class extends Migration
     {
        Schema::table('users', function (Blueprint $table) {
        $table->boolean('is_verified')->nullable();
-       $table->dateTime('email_verified_at')->nullable();
+       $table->dateTime('verified_at')->nullable();
        $table->softDeletes();
 });
     }

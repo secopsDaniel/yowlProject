@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 
+
 class AdminController extends Controller
 {
     public function index()
     {
-        $tousLesUsers = User::withTrashed()->get();
+        $tousLesUsers = User::get();
 
         return $tousLesUsers;
     }
@@ -20,8 +21,8 @@ class AdminController extends Controller
         if(!$user){
             return response()->json(["message" => "L'utilisateur n'existe pas! "], 404);
         }
-        
-        $user->forceDelete();
+
+        $user->delete();
 
         return response()->json(["message" => "L'utilisateur a bien été supprimé"]);
     }
