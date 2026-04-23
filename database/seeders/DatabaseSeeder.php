@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         'email'  => 'admin@yowl.com',
         'gender' => 'Homme',
         'role'  => 'admin',
-         'birthday' => '19-04-2026',
+         'birthday' => '2026-04-19',
          'password' =>Hash::make('admin123'),
          'verified_at'=> now(),
          'is_verified' => true
