@@ -1,0 +1,77 @@
+<?php
+use App\Models\User;
+use App\Http\Controllers\AuthController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\AdminController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\postController;
+use App\Http\Controllers\Categories;
+use App\Http\Controllers\CommentaireController;
+
+/*
+Authentification api routes
+ces routes n'ont pas besoin d'authentifications
+*/
+Route::post('/register', [AuthController::class, 'SignUp']);
+Route::post('/login', [AuthController::class, 'SignIn']);
+
+/*
+Authentification api routes
+ces routes  ont besoin d'authentification
+*/
+Route::middleware('auth:sanctum')->group(function () {
+Route::post('/logout', [AuthController::class, 'logout']);
+Route::post('/user/edit/{id}', [AuthController::class, 'editUserData']);
+
+});
+
+/*
+User api route : besoin d'authentifiation
+*/
+Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
+    return $request->user();
+});
+/*
+Mail api routes
+*/
+Route::get('/email/verify/{id}/{hash}',[AuthController::class, 'Verify_Email'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return response()->json(['message' => 'Le lien de vérification est envoyé, Vérifiez vos emails!']);
+})->middleware(['auth:sanctum', 'throttle:6,1'])->name('verification.send');
+
+/*
+Post api and commentaires route ont besoin authentification
+*/
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/post', [postController::class, 'getDataFromLink']);
+    Route::post('/post/update/{id}', [postController::class, 'UpdatePost']);
+    Route::post('/post/{id}', [postController::class, 'getPOst']);
+
+    Route::post('/comments', [CommentaireController::class, 'createComment']);
+    Route::put('/comments/{id}', [CommentaireController::class, 'updateComment']);
+    Route::delete('/comments/{id}', [CommentaireController::class, 'deleteComment']);
+    Route::post('/comments/{id}/like', [CommentaireController::class, 'likeComment']);
+
+    Route::post('/categories', [Categories::class, 'create']);
+});
+
+/*
+Post api and categories route qui n'ont  besoin d'authentification
+*/
+
+    Route::get('/categories', [Categories::class, 'getAll']);
+    Route::get('/posts', [postController::class, 'getAllPosts']);
+/*
+Admin api route necessite authentification
+for sure !!
+*/
+Route::middleware('auth:sanctum')->group(function(){
+Route::get('/admin/users', [AdminController::class, 'index']);
+route::delete('/admin/users/{id}', [AdminController::class, 'destroy']);
+route::put('/admin/users/{id}', [AdminController::class, 'update']);
+
+});
+
